@@ -10,7 +10,7 @@
 <h3>Halaman</h3>
 <li>Home Slider, Foto Produk, Logo Patner</li>
 <li>Halaman Detail Produk</li>
-<li>Keranjang Belanja </li>=
+<li>Keranjang Belanja </li>
  </ul>
  <hr>
  <ul>
