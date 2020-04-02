@@ -27,14 +27,14 @@
                 <div class="product-pic-zoom">
                   <img class="product-big-img" :src="gambar_default" />
                 </div>
-                <div class="product-thumbs" v-if="productDetails.galleries > 0">
-                  <carousel class="product-thumbs-track ps-slider" :nav="false" :dots="false">
+                <div class="product-thumbs" v-if="productDetails.galleries.length > 0">
+                  <carousel :dots="false" :nav="false" class="product-thumbs-track ps-slider">
                     <div
                       v-for="ss in productDetails.galleries"
                       :key="ss.id"
                       class="pt"
                       @click="changeImage(ss.photo)"
-                      :class="ss.foto == gambar_default ? 'active' : '' "
+                      :class="ss.photo == gambar_default ? 'active' : '' "
                     >
                       <img :src="ss.photo" alt />
                     </div>
@@ -54,7 +54,7 @@
                     <h4>Rp, {{ productDetails.price }}</h4>
                   </div>
                   <div class="quantity">
-                    <router-link to="/cart">
+                    <router-link v-bind:to="/product/+productDetails.id">
                       <a
                         @click="saveKeranjang(productDetails.id, productDetails.name, productDetails.price, productDetails.galleries[0].photo)"
                         href="#"
@@ -82,6 +82,7 @@ import Footer from "@/components/Footer.vue";
 import RelatedProduct from "@/components/RelatedProduct.vue";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "product",
@@ -119,6 +120,16 @@ export default {
       this.keranjangUser.push(productStored);
       const parsed = JSON.stringify(this.keranjangUser);
       localStorage.setItem("keranjangUser", parsed);
+
+      Swal.fire({
+        title: nameProduct,
+        text: "Berhasil Masuk keranjang",
+        icon: "success",
+        confirmButtonText: "ok"
+      });
+      setTimeout(function() {
+        window.location.reload(1);
+      }, 5000);
     }
   },
 
@@ -131,7 +142,7 @@ export default {
       }
     }
     axios
-      .get("https://laravel.kopimukidi.online/public/api/products", {
+      .get("https://test.rumahkopimukidi.online/api/products", {
         params: {
           id: this.$route.params.id
         }

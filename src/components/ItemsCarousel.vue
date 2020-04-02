@@ -20,7 +20,7 @@
               </div>
               <div class="pi-text">
                 <div class="catagory-name">{{itemProduct.type}}</div>
-                <router-link to="/product">
+                <router-link v-bind:to="/product/+itemProduct.id">
                   <h5>{{itemProduct.name}}</h5>
                 </router-link>
                 <div class="product-price">
@@ -32,7 +32,7 @@
           </carousel>
         </div>
         <div class="col-lg-12" v-else>
-          <p>data belum tersedia</p>
+          <i class="fa fa-spinner"></i>
         </div>
       </div>
     </div>
@@ -56,9 +56,17 @@ export default {
   },
   mounted() {
     axios
-      .get("https://laravel.kopimukidi.online/public/api/products")
+      .get("https://test.rumahkopimukidi.online/api/products")
       .then(res => (this.products = res.data.data.data))
       .catch(err => console.log(err));
+
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (e) {
+        localStorage.removeItem("keranjangUser");
+      }
+    }
   },
   methods: {
     saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {

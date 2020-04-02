@@ -46,7 +46,8 @@
                           <h5>{{ keranjang.name }}</h5>
                         </td>
                         <td class="p-price first-row">{{ keranjang.price }}</td>
-                        <td @click="removeItem(keranjangUser.index)" class="delete-item">
+
+                        <td @click="removeItem(keranjang.id)" class="delete-item">
                           <a href="#">
                             <i class="material-icons">close</i>
                           </a>
@@ -85,16 +86,80 @@
                       />
                     </div>
                     <div class="form-group">
-                      <label for="namaLengkap">No. HP</label>
+                      <label for="namaLengkap">Nomer HP</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="noHP"
-                        aria-describedby="noHPHelp"
-                        placeholder="Masukan No. HP"
+                        id="nohp"
+                        aria-describedby="nohp"
+                        placeholder="Masukan No Hp"
                         v-model="customerInfo.number"
                       />
                     </div>
+                    <div class="form-group">
+                      <input
+                        type="hidden"
+                        class="form-control"
+                        id="berat"
+                        aria-describedby="emailHelp"
+                        placeholder="Masukan Email"
+                        v-model="ongkirInfo.weight"
+                      />
+                    </div>
+                    <div class="form-group" v-if="kota.length > 0">
+                      <label for="kota">Kabupaten/Kota</label>
+                      <select
+                        name="kota"
+                        id="kota"
+                        class="custom-select"
+                        tabindex="12"
+                        v-model="ongkirInfo.destination"
+                      >
+                        <optgroup v-for="kotaku in kota" :key="kotaku.id" :label="kotaku.title">
+                          <option
+                            v-for="kab in kotaku.city"
+                            :key="kab.id"
+                            :value="kab.id"
+                          >{{ kab.title }}</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="kurir">Kurir Pengiriman</label>
+                      <br />
+                      <div class="customradio">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio1"
+                          value="jne"
+                          v-model="ongkirInfo.courier"
+                        />
+                        <label class="form-check-label" for="inlineRadio1">JNE</label>
+
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio2"
+                          value="pos"
+                          v-model="ongkirInfo.courier"
+                        />
+                        <label class="form-check-label" for="inlineRadio2">POS</label>
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio3"
+                          value="tiki"
+                          v-model="ongkirInfo.courier"
+                        />
+                        <label class="form-check-label" for="inlineRadio3">TIKI</label>
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <label for="alamatLengkap">Alamat Lengkap</label>
                       <textarea
@@ -114,17 +179,13 @@
               <div class="col-lg-12">
                 <div class="proceed-checkout text-left">
                   <ul>
-                    <li class="subtotal">
-                      ID Transaction
-                      <span>#SH12000</span>
-                    </li>
                     <li class="subtotal mt-3">
                       Subtotal
                       <span>{{ totalHarga }}</span>
                     </li>
                     <li class="subtotal mt-3">
-                      Ongkir
-                      <span>{{ ongkir }}</span>
+                      Ongkir Reguler
+                      <span>{{CostOngkir}}</span>
                     </li>
                     <li class="subtotal mt-3">
                       Total Transfer
@@ -144,7 +205,20 @@
                     </li>
                   </ul>
                   <!-- <router-link to="/success"> -->
-                  <a @click="checkout()" href="#" class="proceed-btn">SELESAIKAN DAN BAYAR</a>
+                  <a
+                    @click="cekongkir()"
+                    href="#"
+                    class="primary-btn"
+                    style="width:100%; text-align:center"
+                  >CEK ONGKIR</a>
+
+                  <button
+                    :disabled="!flagCheckOut"
+                    @click="checkout()"
+                    href="#"
+                    class="primary-btn"
+                    style="width:100%; background-color:#3b8686; text-align:center"
+                  >SELESAIKAN DAN BAYAR</button>
                   <!-- </router-link> -->
                 </div>
               </div>
@@ -160,6 +234,7 @@
 <script>
 import Header from "@/components/Header.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "cart",
@@ -169,19 +244,37 @@ export default {
   data() {
     return {
       keranjangUser: [],
+      kota: [],
+      CostOngkir: 0,
+      flagCheckOut: false,
       customerInfo: {
         name: "",
         email: "",
         number: "",
         address: ""
+      },
+      ongkirInfo: {
+        destination: "",
+        weight: "100",
+        courier: ""
       }
     };
   },
   methods: {
-    removeItem(index) {
+    removeItem(xx) {
+      // this.keranjangUser.splice(index, 1);
+      // const parsed = JSON.stringify(this.keranjangUser);
+      // localStorage.setItem("keranjangUser", parsed);
+      // window.location.reload();
+      let faveGifs = JSON.parse(localStorage.getItem("keranjangUser"));
+      let faveGif = faveGifs.map(faveGif => faveGif.id);
+      let index = faveGif.findIndex(id => id == xx);
       this.keranjangUser.splice(index, 1);
       const parsed = JSON.stringify(this.keranjangUser);
       localStorage.setItem("keranjangUser", parsed);
+      window.location.reload();
+      // eslint-disable-next-line no-console
+      console.log(index);
     },
     // fungsi mengirim data ke API
     checkout() {
@@ -199,16 +292,77 @@ export default {
         transaction_details: productIds
       };
 
-      axios
-        .post(
-          "https://laravel.kopimukidi.online/public/api/checkout",
-          checkoutData
-        )
-        .then(() => this.$router.push("success"))
-        // eslint-disable-next-line no-console
-        .catch(err => console.log(err));
+      if (!this.customerInfo.name) {
+        Swal.fire({
+          icon: "error",
+          title: "Nama tidak boleh kosong"
+        });
+      } else if (!this.customerInfo.email) {
+        Swal.fire({
+          icon: "error",
+          title: "Email tidak boleh kosong"
+        });
+      } else if (!this.customerInfo.number) {
+        Swal.fire({
+          icon: "error",
+          title: "Nomor hp tidak boleh kosong"
+        });
+      } else if (!this.customerInfo.address) {
+        Swal.fire({
+          icon: "error",
+          title: "Alamat tidak boleh kosong"
+        });
+      } else {
+        axios
+          .post(
+            "https://test.rumahkopimukidi.online/api/checkout",
+            checkoutData
+          )
+          .then(() => this.$router.push("success"))
+          // eslint-disable-next-line no-console
+          .catch(err => console.log(err));
+        localStorage.clear();
+      }
+    },
+    cekongkir() {
+      let kota = this.ongkirInfo.destination;
+      let courier = this.ongkirInfo.courier;
+      let ongkirData = {
+        destination: this.ongkirInfo.destination,
+        weight: this.ongkirInfo.weight,
+        courier: this.ongkirInfo.courier
+      };
+
+      if (kota == 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Kota tujuan tidak boleh kosong"
+        });
+      } else if (courier == 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Kurir tidak boleh kosong"
+        });
+      } else if (kota && courier) {
+        this.flagCheckOut = true;
+        axios
+          .post("https://test.rumahkopimukidi.online/api/cekongkir", ongkirData)
+          .then(res => {
+            this.CostOngkir = res.data.data[0].costs[0].cost[0].value;
+          })
+          // .then(res => {
+          // //   console.log(res);
+          // // })
+          // eslint-disable-next-line no-console
+          .catch(err => console.log(err));
+        Swal.fire({
+          icon: "success",
+          title: "Ongkir Berhasil Diambil"
+        });
+      }
     }
   },
+
   mounted() {
     if (localStorage.getItem("keranjangUser")) {
       try {
@@ -217,7 +371,12 @@ export default {
         localStorage.removeItem("keranjangUser");
       }
     }
+    axios
+      .get("https://test.rumahkopimukidi.online/api/getkota")
+      .then(res => (this.kota = res.data.data))
+      .catch(err => console.log(err));
   },
+
   computed: {
     totalHarga() {
       return this.keranjangUser.reduce(function(items, data) {
@@ -227,11 +386,8 @@ export default {
         return c;
       }, 0);
     },
-    ongkir() {
-      return 20000;
-    },
     totalBiaya() {
-      return this.totalHarga + this.ongkir;
+      return this.totalHarga + this.CostOngkir;
     }
   }
 };
@@ -241,5 +397,54 @@ export default {
 .img-cart {
   width: 80px;
   height: 70px;
+}
+.customradio input[type="radio"] {
+  display: none;
+}
+.customradio label {
+  position: relative;
+  display: inline-block;
+  padding: 3px 3px 3px 20px;
+  margin-right: 5%;
+  cursor: pointer;
+}
+.customradio label::before,
+.customradio label::after {
+  position: absolute;
+  content: "";
+  top: 60%;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.customradio label::before {
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: -10px;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+}
+.customradio label:hover::before {
+  background: #fff;
+}
+.customradio label::after {
+  opacity: 0;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  margin-top: -7px;
+  background: #41b883;
+  -webkit-transform: scale(2);
+  transform: scale(2);
+}
+.customradio input[type="radio"]:checked + label::before {
+  background: #fff;
+  border: 1px solid #41b883;
+}
+.customradio input[type="radio"]:checked + label::after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
 }
 </style>

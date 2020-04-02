@@ -827,8 +827,9 @@ ol {
 -----------------------*/
 
 .hero-items .single-hero-items {
-    height: 515px;
-    padding-top: 210px;
+    height: 495px;
+    padding-top: 110px;
+    margin:auto;
 }
 
 .hero-items .single-hero-items span {
@@ -840,7 +841,7 @@ ol {
     line-height: 28px;
     display: inline-block;
     position: relative;
-    top: 50px;
+    top: 10px;
     opacity: 0;
 }
 
@@ -855,16 +856,17 @@ ol {
 }
 
 .hero-items .single-hero-items p {
-    margin-bottom: 42px;
+    margin-bottom: 17px;
     position: relative;
-    top: 100px;
+    top: 10px;
     opacity: 0;
 }
 
 .hero-items .single-hero-items .primary-btn {
     position: relative;
-    top: 100px;
+    top: 10px;
     opacity: 0;
+    margin-bottom: 10px;
 }
 
 .hero-items .off-card {
@@ -1347,8 +1349,8 @@ ol {
 
 .instagram-photo .insta-item {
     float: left;
-    width: 16.66%;
-    height: 320px;
+    width: 100%;
+    height: 100%;
     text-align: center;
     position: relative;
 }
@@ -1521,11 +1523,11 @@ ol {
 
 .footer-section {
     background: #191919;
-    padding-top: 75px;
+    padding-top: 50px;
 }
 
 .footer-left {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .footer-left .footer-logo {
@@ -1533,7 +1535,7 @@ ol {
 }
 
 .footer-left .footer-logo img {
-    height: 30px !important;
+    height: 170px !important;
 }
 
 .footer-left .footer-logo a {
@@ -1548,7 +1550,7 @@ ol {
 }
 
 .footer-left .footer-social {
-    padding-top: 25px;
+    padding-top:4px;
 }
 
 .footer-left .footer-social a {
@@ -1560,7 +1562,7 @@ ol {
     text-align: center;
     line-height: 40px;
     border-radius: 50%;
-    margin-right: 7px;
+    margin-right: 5px;
     position: relative;
     z-index: 1;
 }
@@ -1586,8 +1588,14 @@ ol {
     z-index: -1;
 }
 
+.footer-left h5 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 26px;
+}
 .footer-widget {
     margin-bottom: 30px;
+    padding:0;
 }
 
 .footer-widget h5 {
@@ -1598,6 +1606,10 @@ ol {
 
 .footer-widget ul li {
     list-style: none;
+}
+.footer-widget a:hover {
+  color:#41B883;
+  transition-duration: 0.7s;
 }
 
 .footer-widget ul li a {
@@ -1673,7 +1685,7 @@ ol {
 }
 
 .copyright-reserved .copyright-text {
-    float: left;
+    float: center;
     font-size: 16px;
     color: #b2b2b2;
 }

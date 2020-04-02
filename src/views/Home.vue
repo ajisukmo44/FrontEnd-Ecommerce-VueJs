@@ -3,6 +3,7 @@
     <Header />
     <OwlCarousel />
     <ItemsCarousel />
+    <!-- <InstaGallery /> -->
     <LogoPatner />
 
     <Footer />
@@ -14,6 +15,7 @@
 import Header from "@/components/Header.vue";
 import OwlCarousel from "@/components/OwlCarousel.vue";
 import ItemsCarousel from "@/components/ItemsCarousel.vue";
+// import InstaGallery from "@/components/InstaGallery.vue";
 import LogoPatner from "@/components/LogoPatner.vue";
 import Footer from "@/components/Footer.vue";
 
@@ -23,6 +25,7 @@ export default {
     Header,
     OwlCarousel,
     ItemsCarousel,
+    // InstaGallery,
     LogoPatner,
     Footer
   }
