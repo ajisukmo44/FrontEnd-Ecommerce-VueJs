@@ -103,4 +103,9 @@
   margin-right: 13px;
   margin-bottom: 13px;
 }
+@media screen and (max-width: 550px) {
+  .footer-logo {
+    margin-left: 32%;
+  }
+}
 </style>

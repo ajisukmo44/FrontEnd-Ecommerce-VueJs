@@ -44,6 +44,7 @@
                               <div class="product-selected">
                                 <p>{{ keranjang.price }}</p>
                                 <h6>{{ keranjang.name }}</h6>
+                                <!-- <h6>{{ items.jumlah }}</h6> -->
                               </div>
                             </td>
                             <td @click="removeItem(keranjang.id)" class="si-close">
@@ -88,10 +89,6 @@ export default {
   },
   methods: {
     removeItem(xx) {
-      // this.keranjangUser.splice(index, 1);
-      // const parsed = JSON.stringify(this.keranjangUser);
-      // localStorage.setItem("keranjangUser", parsed);
-      // window.location.reload();
       let faveGifs = JSON.parse(localStorage.getItem("keranjangUser"));
       let faveGif = faveGifs.map(faveGif => faveGif.id);
       let index = faveGif.findIndex(id => id == xx);
@@ -131,5 +128,10 @@ export default {
 .photo-item {
   width: 50px;
   height: 50px;
+}
+@media screen and (max-width: 550px) {
+  .cart-hover {
+    margin-left: 70px;
+  }
 }
 </style>

@@ -7,7 +7,7 @@
             <div class="product-item" v-for="itemProduct in products" v-bind:key="itemProduct.id">
               <div class="pi-pic">
                 <img :src="itemProduct.galleries[0].photo" />
-                <ul>
+                <ul class="lihat">
                   <li class="w-icon active">
                     <a href="#">
                       <i class="fa fa-plus"></i>
@@ -56,7 +56,7 @@ export default {
   },
   mounted() {
     axios
-      .get("https://test.rumahkopimukidi.online/api/products")
+      .get("https://bl.ajisukmo.tech/api/products")
       .then(res => (this.products = res.data.data.data))
       .catch(err => console.log(err));
 
@@ -89,5 +89,10 @@ export default {
 <style scoped>
 .product-item {
   margin-right: 20px;
+}
+@media screen and (max-width: 550px) {
+  ul {
+    display: none;
+  }
 }
 </style>

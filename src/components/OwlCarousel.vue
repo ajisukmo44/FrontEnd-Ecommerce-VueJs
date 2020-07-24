@@ -103,7 +103,7 @@ export default {
   },
   mounted() {
     axios
-      .get("https://test.rumahkopimukidi.online/api/slider")
+      .get("https://bl.ajisukmo.tech/api/slider")
       .then(res => (this.sliders = res.data.data))
       .catch(err => console.log(err));
   }

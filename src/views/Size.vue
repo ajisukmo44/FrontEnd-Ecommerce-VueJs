@@ -15,11 +15,3 @@
     <!-- Product Shop Section End -->
   </div>
 </template>
-
-<script>
-// // @ is an alias to /src
-
-export default {
-  methods: {}
-};
-</script>

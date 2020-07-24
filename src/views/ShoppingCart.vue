@@ -46,7 +46,16 @@
                           <h5>{{ keranjang.name }}</h5>
                         </td>
                         <td class="p-price first-row">{{ keranjang.price }}</td>
-
+                        <!-- <td>
+                          <input
+                            @click="jumlah(index)"
+                            type="number"
+                            class="p-price first-row"
+                            value="1"
+                            min="1"
+                            style="width:44px; text-align:center"
+                          />
+                        </td>-->
                         <td @click="removeItem(keranjang.id)" class="delete-item">
                           <a href="#">
                             <i class="material-icons">close</i>
@@ -119,7 +128,7 @@
                           <option
                             v-for="kab in kotaku.city"
                             :key="kab.id"
-                            :value="kab.id"
+                            :value="kab.city_id"
                           >{{ kab.title }}</option>
                         </optgroup>
                       </select>
@@ -205,19 +214,19 @@
                     </li>
                   </ul>
                   <!-- <router-link to="/success"> -->
-                  <a
+                  <button
                     @click="cekongkir()"
                     href="#"
                     class="primary-btn"
                     style="width:100%; text-align:center"
-                  >CEK ONGKIR</a>
+                  >CEK ONGKIR</button>
 
                   <button
                     :disabled="!flagCheckOut"
                     @click="checkout()"
                     href="#"
                     class="primary-btn"
-                    style="width:100%; background-color:#3b8686; text-align:center"
+                    style="width:100%; background-color:#000; text-align:center"
                   >SELESAIKAN DAN BAYAR</button>
                   <!-- </router-link> -->
                 </div>
@@ -287,6 +296,8 @@ export default {
         email: this.customerInfo.email,
         number: this.customerInfo.number,
         address: this.customerInfo.address,
+        ongkir: this.CostOngkir,
+        kurir: this.ongkirInfo.courier,
         transaction_total: this.totalBiaya,
         transaction_status: "PENDING",
         transaction_details: productIds
@@ -314,10 +325,7 @@ export default {
         });
       } else {
         axios
-          .post(
-            "https://test.rumahkopimukidi.online/api/checkout",
-            checkoutData
-          )
+          .post("https://bl.ajisukmo.tech/api/checkout", checkoutData)
           .then(() => this.$router.push("success"))
           // eslint-disable-next-line no-console
           .catch(err => console.log(err));
@@ -346,9 +354,9 @@ export default {
       } else if (kota && courier) {
         this.flagCheckOut = true;
         axios
-          .post("https://test.rumahkopimukidi.online/api/cekongkir", ongkirData)
+          .post("https://bl.ajisukmo.tech/api/cekongkir", ongkirData)
           .then(res => {
-            this.CostOngkir = res.data.data[0].costs[0].cost[0].value;
+            this.CostOngkir = res.data.data[0].costs[1].cost[0].value;
           })
           // .then(res => {
           // //   console.log(res);
@@ -372,7 +380,7 @@ export default {
       }
     }
     axios
-      .get("https://test.rumahkopimukidi.online/api/getkota")
+      .get("https://bl.ajisukmo.tech/api/getkota")
       .then(res => (this.kota = res.data.data))
       .catch(err => console.log(err));
   },

@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     axios
-      .get("https://test.rumahkopimukidi.online/api/logopatner")
+      .get("https://bl.ajisukmo.tech/api/logopatner")
       .then(res => (this.logo = res.data.data))
       .catch(err => console.log(err));
   }

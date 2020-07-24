@@ -51,6 +51,8 @@
                   <div class="pd-desc">
                     <p v-html="productDetails.description"></p>
                     <br />
+                    <p>Stok : {{ productDetails.quantity}}</p>
+                    <br />
                     <h4>Rp, {{ productDetails.price }}</h4>
                   </div>
                   <div class="quantity">
@@ -115,7 +117,8 @@ export default {
         id: idProduct,
         name: nameProduct,
         price: priceProduct,
-        photo: photoProduct
+        photo: photoProduct,
+        jumlah: 1
       };
       this.keranjangUser.push(productStored);
       const parsed = JSON.stringify(this.keranjangUser);
@@ -124,12 +127,11 @@ export default {
       Swal.fire({
         title: nameProduct,
         text: "Berhasil Masuk keranjang",
-        icon: "success",
-        confirmButtonText: "ok"
+        icon: "success"
       });
       setTimeout(function() {
         window.location.reload(1);
-      }, 5000);
+      }, 1500);
     }
   },
 
@@ -142,7 +144,7 @@ export default {
       }
     }
     axios
-      .get("https://test.rumahkopimukidi.online/api/products", {
+      .get("https://bl.ajisukmo.tech/api/products", {
         params: {
           id: this.$route.params.id
         }

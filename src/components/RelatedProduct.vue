@@ -40,44 +40,43 @@
   </section>
 </template>
 
-<script>
-import carousel from "vue-owl-carousel";
-import axios from "axios";
 
-export default {
-  name: "ItemsCarousel",
-  components: {
-    carousel
-  },
+// import carousel from "vue-owl-carousel";
+// import axios from "axios";
 
-  data() {
-    return {
-      products: [],
-      keranjangUser: []
-    };
-  },
-  mounted() {
-    axios
-      .get("https://test.rumahkopimukidi.online/api/products")
-      .then(res => (this.products = res.data.data.data))
-      .catch(err => console.log(err));
-  },
-  methods: {
-    saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
-      var productStored = {
-        id: idProduct,
-        name: nameProduct,
-        price: priceProduct,
-        photo: photoProduct
-      };
+// export default {
+//   name: "ItemsCarousel",
+//   components: {
+//     carousel
+//   },
 
-      this.keranjangUser.push(productStored);
-      const parsed = JSON.stringify(this.keranjangUser);
-      localStorage.setItem("keranjangUser", parsed);
-    }
-  }
-};
-</script>
+//   data() {
+//     return {
+//       products: [],
+//       keranjangUser: []
+//     };
+//   },
+//   mounted() {
+//     axios
+//       .get("https://bl.ajisukmo.tech/api/products")
+//       .then(res => (this.products = res.data.data.data))
+//       .catch(err => console.log(err));
+//   },
+//   methods: {
+//     saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+//       var productStored = {
+//         id: idProduct,
+//         name: nameProduct,
+//         price: priceProduct,
+//         photo: photoProduct
+//       };
+
+//       this.keranjangUser.push(productStored);
+//       const parsed = JSON.stringify(this.keranjangUser);
+//       localStorage.setItem("keranjangUser", parsed);
+//     }
+//   }
+// };
 
 
 <style scoped>
