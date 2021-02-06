@@ -56,7 +56,7 @@ export default {
   },
   mounted() {
     axios
-      .get("https://bl.ajisukmo.tech/api/products")
+      .get("https://be.kambingjogja.com/api/products")
       .then(res => (this.products = res.data.data.data))
       .catch(err => console.log(err));
 
